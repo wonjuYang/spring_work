@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:aop="http://www.springframework.org/schema/aop"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+
+
+   <bean class="test.service.MemberServiceImpl"/>
+   <bean class="test.service.CafeServiceImpl"/>
+   <bean id = "one" class="test.aspect.PrintLogAspect"/>   
+
+   <!-- aop 설정 -->
+   <aop:config><!-- 설정만으로 원하는 위치에 one 이라는 id가 적용되게 할수있다. -->
+      <aop:pointcut expression="execution(public void insert())" id="myPoint"/>
+      <aop:pointcut expression="execution(public void select())" id="yourPoint"/>
+      
+      <aop:aspect ref = "one">
+         <aop:around method="printLog" pointcut-ref="yourPoint"/>
+      </aop:aspect>
+   </aop:config>
+</beans>
